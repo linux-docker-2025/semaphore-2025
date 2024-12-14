@@ -1,18 +1,22 @@
 - name: Create a VM on Proxmox
   hosts: proxmox
+  gather_facts: false
   tasks:
-    - name: Create VM
+    - name: Create a VM
       community.general.proxmox:
         api_host: "{{ ansible_host }}"
         api_user: "{{ ansible_user }}"
         api_password: "{{ ansible_password }}"
-        validate_certs: no
-        resource: nodes/{{ inventory_hostname }}/qemu
+        validate_certs: false
+        resource: "nodes/{{ inventory_hostname }}/qemu"
         method: post
         args:
           vmid: 101
           name: "ansible-vm"
           memory: 2048
           cores: 2
-          disk: 10
-          net0: virtio,bridge=vmbr0
+          disks:
+            - storage: "local-lvm"
+              size: "10G"
+              type: "scsi"
+          net0: "virtio,bridge=vmbr0"
