@@ -2,6 +2,10 @@
   hosts: proxmox
   gather_facts: false
   tasks:
+    - name: Debug variables
+      debug:
+        msg: "ansible_password: {{ ansible_password }} | ansible_user: {{ ansible_user }}"
+
     - name: Create a VM
       community.general.proxmox:
         api_host: "{{ ansible_host }}"
