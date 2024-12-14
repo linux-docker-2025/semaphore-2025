@@ -1,0 +1,35 @@
+- name: Configure Debian Template
+  hosts: all
+  become: true
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install basic tools
+      apt:
+        name:
+          - vim
+          - curl
+          - wget
+          - net-tools
+          - openssh-server
+        state: present
+
+    - name: Clean up apt cache
+      apt:
+        autoclean: yes
+        autoremove: yes
+
+    - name: Zero out disk
+      command: dd if=/dev/zero of=/zerofile bs=1M
+      ignore_errors: yes
+
+    - name: Remove zerofile
+      file:
+        path: /zerofile
+        state: absent
+
+    - name: Shut down the VM
+      command: shutdown now
