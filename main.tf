@@ -42,3 +42,10 @@ resource "proxmox_vm_qemu" "debian_template" {
 output "template_id" {
   value = proxmox_vm_qemu.debian_template.vm_id
 }
+
+
+resource "null_resource" "convert_to_template" {
+  provisioner "local-exec" {
+    command = "qm template ${proxmox_vm_qemu.debian_template.vm_id}"
+  }
+}
