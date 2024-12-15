@@ -1,11 +1,8 @@
 ---
-- name: Clone a VM from a template in Proxmox
+- name: Clone a VM from a template in Proxmox securely using .env
   hosts: localhost
   gather_facts: false
   vars:
-    proxmox_host: "your-proxmox-server-ip"
-    proxmox_user: "your-proxmox-username@pam!your-token-id"
-    proxmox_password: "your-token-secret"
     node: "proxmox-node-name"
     template: "debian-12-template"
     new_vm_id: 110
@@ -14,8 +11,13 @@
     cpu_cores: 2
     memory_mb: 2048
     disk_size_gb: 20
-
   tasks:
+    - name: Load environment variables from .env file
+      set_fact:
+        proxmox_host: "{{ lookup('env', 'PROXMOX_HOST') }}"
+        proxmox_user: "{{ lookup('env', 'PROXMOX_USER') }}"
+        proxmox_password: "{{ lookup('env', 'PROXMOX_PASSWORD') }}"
+
     - name: Clone the template
       uri:
         url: "https://{{ proxmox_host }}/api2/json/nodes/{{ node }}/qemu/{{ template }}/clone"
@@ -54,4 +56,3 @@
         user: "{{ proxmox_user }}"
         password: "{{ proxmox_password }}"
         validate_certs: false
-
