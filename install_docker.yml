@@ -36,7 +36,6 @@
         name:
           - docker
           - docker-compose
-          - containerd.io
         state: latest
 
     - name: Add user to the Docker group
