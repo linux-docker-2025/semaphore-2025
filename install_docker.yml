@@ -7,7 +7,7 @@
       apt:
         update_cache: yes
 
-    - name: Install required packages
+    - name: Install required dependencies
       apt:
         name:
           - apt-transport-https
@@ -17,47 +17,18 @@
           - lsb-release
         state: present
 
-    - name: Add Docker GPG key
-      apt_key:
-        url: https://download.docker.com/linux/debian/gpg
-        state: present
-
-    - name: Add Docker repository
-      apt_repository:
-        repo: "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-        state: present
-
-    - name: Update apt cache after adding Docker repo
-      apt:
-        update_cache: yes
-
-    - name: Install Docker
+    - name: Install Docker and Docker Compose
       apt:
         name:
-          - docker
+          - docker.io
           - docker-compose
-        state: latest
+        state: present
 
     - name: Add user to the Docker group
       user:
         name: "{{ ansible_user }}"
         groups: docker
         append: yes
-
-    - name: Download Docker Compose binary
-      get_url:
-        url: "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)"
-        dest: "/usr/local/bin/docker-compose"
-        mode: '0755'
-
-    - name: Verify Docker Compose installation
-      command: docker-compose --version
-      register: compose_version
-      changed_when: false
-
-    - name: Debug Docker Compose version
-      debug:
-        msg: "Docker Compose version installed: {{ compose_version.stdout }}"
 
     - name: Enable and start Docker service
       systemd:
