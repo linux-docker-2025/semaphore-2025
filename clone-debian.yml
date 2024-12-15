@@ -3,8 +3,8 @@
   hosts: localhost
   gather_facts: false
   vars:
-    node: "proxmox-node-name"
-    template: "debian-12-template"
+    node: "pve"
+    template: "debian12"
     new_vm_id: 110
     new_vm_name: "new-debian-vm"
     target_storage: "local-lvm"
