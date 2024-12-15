@@ -13,10 +13,12 @@
     disk_size_gb: 20
   tasks:
     - name: Load environment variables from .env file
+    - name: Load environment variables from .env file
       set_fact:
-        proxmox_host: "{{ lookup('env', 'PROXMOX_HOST') }}"
-        proxmox_user: "{{ lookup('env', 'PROXMOX_USER') }}"
-        proxmox_password: "{{ lookup('env', 'PROXMOX_PASSWORD') }}"
+        proxmox_host: "{{ lookup('community.general.dotenv', 'PROXMOX_HOST') }}"
+        proxmox_user: "{{ lookup('community.general.dotenv', 'PROXMOX_USER') }}"
+        proxmox_password: "{{ lookup('community.general.dotenv', 'PROXMOX_PASSWORD') }}"
+
 
     - name: Clone the template
       uri:
