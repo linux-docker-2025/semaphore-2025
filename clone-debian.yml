@@ -13,7 +13,6 @@
     disk_size_gb: 20
   tasks:
     - name: Load environment variables from .env file
-    - name: Load environment variables from .env file
       set_fact:
         proxmox_host: "{{ lookup('community.general.dotenv', 'PROXMOX_HOST') }}"
         proxmox_user: "{{ lookup('community.general.dotenv', 'PROXMOX_USER') }}"
